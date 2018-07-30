@@ -1,0 +1,150 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{array}
+\usepackage{threeparttable}
+\usepackage{geometry}
+\geometry{letterpaper,tmargin=1in,bmargin=1in,lmargin=1.25in,rmargin=1.25in}
+\usepackage{fancyhdr,lastpage}
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{}
+\rfoot{\footnotesize\textsl{Page \thepage\ of \pageref{LastPage}}}
+\renewcommand\headrulewidth{0pt}
+\renewcommand\footrulewidth{0pt}
+\usepackage[format=hang,font=normalsize,labelfont=bf]{caption}
+\usepackage{listings}
+\lstset{frame=single,
+  language=Python,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  breaklines=true,
+  breakatwhitespace=true
+  tabsize=3
+}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{harvard}
+\usepackage{setspace}
+\usepackage{breqn}
+\usepackage{float,color}
+\usepackage[pdftex]{graphicx}
+\usepackage{hyperref}
+\hypersetup{colorlinks,linkcolor=red,urlcolor=blue}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{case}[theorem]{Case}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{derivation}{Derivation} % Number derivations on their own
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}{Proposition} % Number propositions on their own
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+%\numberwithin{equation}{section}
+\bibliographystyle{aer}
+\newcommand\ve{\varepsilon}
+\newcommand\boldline{\arrayrulewidth{1pt}\hline}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+
+
+
+\begin{document}
+
+\begin{flushleft}
+  \textbf{\large{Problem Set \#6}} \\
+Shirley Yuan, in collaboration with Zeshun Zong, Winston, and Fiona.
+\end{flushleft}
+
+
+\noindent\textbf{Exercise 9.1}\\
+An unconstrained linear objective function is of the form $f(\vec{x})=\vec{c}^T\vec{x}$, where $\vec{c}$ is vector coefficient. If $\vec{c}=\vec{0}$, then $f(\vec{x})=0$, which is constant. If $\vec{c}\neq \vec{0}$, by contradiction assume $\vec{x}^*=argmin f(\vec{x})$. i.e., $\forall \vec{x} \in \mathbb{R}, \vec{c}^T\vec{x}^*\leq \vec{c}^T\vec{x}$. It follows that $\vec{c}^T\vec{x}^*<0$, since if $\vec{c}^T\vec{x}^*\geq 0$, then $\vec{c}^T(\vec{-x})^*=-\vec{c}^T\vec{x}^*\leq0\leq \vec{c}^T\vec{x}^*$.\\
+Now let $y=2\vec{x}^*$, then $\vec{c}^T\vec{y}^*=2\vec{c}^T\vec{x}^*<\vec{c}^T\vec{x}^*<0$\\
+
+\noindent\textbf{Exercise 9.2}\\
+Since $\norm{Ax-b}_2\geq 0$, to minimize $\norm{Ax-b}_2$ is equivalent of minimizing $\norm{Ax-b}_2^2$.\\
+Now  $\norm{Ax-b}_2^2=\langle Ax-b, Ax-b\rangle=(Ax-b)*T(Ax-b)=x^TA^TAx-x^TA^Tb-b^TAx+b^T=x^TA^TAx-2x^TA^Tb+b^T$ \\
+The last term is a constant so in the minimization problem we can drop it. \\
+Let $f(x)= x^TA^TAx-2x^TA^Tb$, then $Df(x)= 2x^T(A^TA)^T-2b^TA$, and $D^2f(x)=2A^TA$\\
+If A is non-singular, then $D^2f(x)>0$. \\
+By FOC, let $Df(x)=0$, we have $x^T(A^TA)^T=b^TA\Leftrightarrow A^TAx=A^Tb$\\
+
+\noindent\textbf{Exercise 9.3}\\
+Gradient decent: slow but cheap\\
+Newton: fast but expensive\\
+conjugate gradient: a combination of both\\
+\noindent\textbf{Exercise 9.4}\\
+"$\Leftarrow$": \\
+Suppose $Df(x_0)^T=Qx_0-b=\vec{v}$ is an eigenvector of $Q$, then \\
+$alpha_0=\frac{Df(x_0)Df(x_0)^T}{Df(x_0)QDf(x_0)^T}=\frac{V^TV}{V^TQV}=\frac{V^TV}{V^T\lambda V}=\frac{1}{\lambda}$\\
+Now by our algorithm, $x_1=x_0-\alpha_0 Df(x_0)^T=x_0-\frac{1}{\lambda}\vec{V}$\\
+Observe that $Q\vec{x_1}=Q(x_0-\frac{1}{\lambda}\vec{V})=Qx_0-\vec{V}=Qx_0-(Qx_0-b)=\vec{b}$\\
+Hence $\vec{x_1}=A^{-1}b$ is a minimizer and therefore the algorithm converges in one step. \\
+"$\Rightarrow$":\\
+If $\vec{x_1}=Q^{-1}\vec{b},$ then $Q\vec{x_1}=\vec{b}$\\
+Since $x_1=x_0-\alpha_0Df(x_1)^T=x_0-\alpha_0(Qx_0-b)$\\
+We have $Q[x_0-\alpha(Qx_0-b)]=\vec{b} \Rightarrow Qx_0-\alpha Q^2x_0+\alpha Qb-b=0$\\
+Observe that $(I-\alpha Q)(Qx_0-b)=Qx_0-b-\alpha Q^2x_0+\alpha Qb=0$\\
+Let $Qx_0-\vec{b}=\vec{v}$, we have $(I-\alpha Q)\vec{v}=0$, so $\vec{v}=\alpha Q\vec{v} \Rightarrow Q\vec{v}=\frac{1}{\alpha}\vec{v}$\\
+Hence $Qx_0 is an eigenvector of Q$.
+
+
+\noindent\textbf{Exercise 9.5}\\
+Assume $Df(x_k)\neq \vec{0}$, so we haven't reached the minimum yet. \\
+Since $\vec{x}_{k+1}-\vec{x}_{k}=-\alpha_kDf(x_k)^T$, and $\vec{x}_{k+2}-\vec{x}_{k+1}=-\alpha_{k+1}Df(x_{k+1})^T$,\\
+we want to show $(\vec{x}_{k+1}-\vec{x}_{k})^T(\vec{x}_{k+2}-\vec{x}_{k+1})=\alpha_k\alpha_{k+1}Df(x_k)^TDf(x_{k+1})^T=0$\\
+i.e., $Df(x_k)^TDf(x_{k+1})^T=0$.\\
+Now, since $\alpha_k=argmin f(x_k-\alpha Df(x_k)^T)$, and $f\in \mathbb{C}'$, by First Order Necessary Condition, we have $-Df(x_k)Df(x_{k+1})^T=0\Rightarrow Df(x_k)Df(x_{k+1})^T=0$\\
+
+\noindent\textbf{Exercise 9.10}\\
+Observe that $Df(x)=x^TQ^T-b^T$, and $D^2f(x)=Q>0$,\\
+By Newton's method, $x_1=x_0-Q^{-1}(Qx_0-b)=Q^{-1}b$\\
+Since $D^2f(x_1)=Q>0$ and $Df(x_1)^T=Qx_1-b=QQ^{-1}b-b=\vec{0}$ \\
+$\Rightarrow$ we know that $x_1$ is the unique minimizer.
+\noindent\textbf{Exercise 9.12}\\
+Suppose $(\lambda_i,v_i)$ is an eigen-pari of A.\\
+Observe that $Bv_i=(A\mu I)v_i=Av_i+\mu Iv_i=\lambda_i v_i+\mu v_i=(\lambda_i +\mu)v_i$.\\
+So $(\lambda_i+\mu,v_i)$ is an eigenpair of B.
+
+\noindent\textbf{Exercise 9.15}\\
+Observe that $BC(C^{-1}+DA^{-A}B)=B+BCDA^{-1}B=(A+BCD)A^{-1}B$\\
+So, $(A+BCD)^{-1}BC=A^{-1}B(C^{-1}+DA^{-1}B)^{-1}$\\
+Hence, \\
+\begin{align*}
+A^{-1}&=(A+BCD)^{-1}(A+BCD)A^{-1}\\
+&=(A+BCD)^{-1}(1+BCDA^{-1})\\
+&=(A+BCD)^{-1}+[(A+BCD)^{-1}BC]DA^{-1}\\
+&=(A+BCD)^{-1}+A^{-1}B(C^{-1}DA^{-1}B)^{-1}DA^{-1}
+\end{align*}
+$\Rightarrow(A+BCD)^{-1}=A^{-1}-A^{-1}B(C^{-1}DA^{-1}B)^{-1}DA^{-1}$
+
+\noindent\textbf{Exercise 9.18}\\
+Observe that \begin{align*}
+\phi_n(\alpha)&=f(\vec{x_k}+\alpha_k \vec{d_k})\\
+&=\frac{1}{2}(\vec{x_k}+\alpha_k\vec{d_k})^TQ(\vec{x_k}+\alpha_k\vec{d_k})-\vec{b}^T(\vec{x_k}+\alpha_k\vec{d_k})+c\\
+&=\frac{1}{2}[\vec{x_k}^TQ\vec{x_k}+\alpha_k^2\vec{d_k}^TQ\vec{d_k}+\alpha_k\vec{d_k}^TQ\vec{x_k}+\alpha_k\vec{x_k}^TQ\vec{d_k}]-\vec{b}^T\vec{x_k}-\alpha_k\vec{b}^T\vec{d_k}\\
+\phi_k^'(\alpha)&=\alpha_k(\vec{d_k}^TQ\vec{d_k})+(\frac{1}{2}\vec{d_k}^TQ\vec{x_k}+\frac{1}{2}\vec{x_k}^TQ\vec{d_k})-\vec{b}^T\vec{d_k}\\
+&=\alpha_k(\vec{d_k}^TQ\vec{d_k})+\frac{1}{2}(Q\vec{x_k})^T\vec{d_k}+\frac{1}{2}(Q\vec{x_k})^T\vec{d_k}-\vec{b}^T\vec{d_k}\\
+&=\alpha_k(\vec{d_k}^TQ\vec{d_k})+(Q\vec{x_k})^T\vec{d_k}-\vec{b}^T\vec{d_k}
+\end{align*}
+Setting derivative to 0, we have $$\alpha_k=\frac{\vec{b}^T\vec{d_k}-(Q\vec{x_k})^T\vec{d_k}}{\vec{d_k}^TQ\vec{d_k}}=\frac{\vec{r_k}^T\vec{d_k}}{\vec{d_k}^TQ\vec{d_k}}$$
+where $\vec{r_k}=\vec{b}-Q\vec{x_k}$
+\end{document}
